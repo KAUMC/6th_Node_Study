@@ -1,0 +1,112 @@
+-- member 테이블 생성
+CREATE TABLE member (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    gender CHAR(10),
+    age INT,
+    address VARCHAR(40),
+    spec_address VARCHAR(40),
+    status VARCHAR(15),
+    inactive_date TIMESTAMP,
+    social_type VARCHAR(10),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    email VARCHAR(40),
+    point INT
+);
+
+-- terms 테이블 생성
+CREATE TABLE terms (
+    id BIGINT PRIMARY KEY,
+    title VARCHAR(20),
+    body TEXT,
+    optional BOOLEAN,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- member_agree 테이블 생성
+CREATE TABLE member_agree (
+    id BIGINT PRIMARY KEY,
+    member_id BIGINT REFERENCES member(id),
+    terms_id BIGINT REFERENCES terms(id),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- food_category 테이블 생성
+CREATE TABLE food_category (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(15),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- member_prefer 테이블 생성
+CREATE TABLE member_prefer (
+    id BIGINT PRIMARY KEY,
+    member_id BIGINT REFERENCES member(id),
+    category_id BIGINT REFERENCES food_category(id),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- region 테이블 생성
+CREATE TABLE region (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(20),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- store 테이블 생성
+CREATE TABLE store (
+    id BIGINT PRIMARY KEY,
+    region_id BIGINT REFERENCES region(id),
+    name VARCHAR(50),
+    address VARCHAR(50),
+    score FLOAT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- mission 테이블 생성
+CREATE TABLE mission (
+    id BIGINT PRIMARY KEY,
+    store_id BIGINT REFERENCES store(id),
+    reward INT,
+    deadline TIMESTAMP,
+    mission_spec TEXT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- member_mission 테이블 생성
+CREATE TABLE member_mission (
+    id BIGINT PRIMARY KEY,
+    member_id BIGINT REFERENCES member(id),
+    mission_id BIGINT REFERENCES mission(id),
+    status VARCHAR(15),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- review 테이블 생성
+CREATE TABLE review (
+    id BIGINT PRIMARY KEY,
+    member_id BIGINT REFERENCES member(id),
+    store_id BIGINT REFERENCES store(id),
+    body TEXT,
+    score FLOAT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+-- review_image 테이블 생성
+CREATE TABLE review_image (
+    id BIGINT PRIMARY KEY,
+    review_id BIGINT REFERENCES review(id),
+    image_url TEXT,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
